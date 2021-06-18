@@ -2,9 +2,9 @@ const express = require('express');
 const colors = require('colors');
 const connectDb = require('./db/connect');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const dotenv = require ('dotenv');
-const Workout = require('./models/Workout.js');
+
+
 
 const port = process.env.PORT || 8080
 
@@ -13,18 +13,15 @@ connectDb();
 
 const app = express();
 app.use(morgan('dev'));
-app.use (bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true}));
-app.use(express.static('/public'));
+app.use (express.json())
+app.use(express.urlencoded({ extended: true}));
+app.use(express.static('public'));
 
 //Routing
 
-require('./routes/apiRoutes')
-require('./routes/htmlRoutes')
+require('./routes/apiRoutes')(app);
+require('./routes/htmlRoutes')(app);
 
-app.get('/', (req, res) => {
-    res.send('api is connected')
-})
 
 
 //Connect to PORT and console.log message that server is running for verification
