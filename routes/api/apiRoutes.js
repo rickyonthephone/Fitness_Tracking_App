@@ -25,25 +25,39 @@ const router = require('express').Router();
     });
 //Create/post a workout    
     router.post ('/', async (req, res) => {
-        Workout.create({})
-        .then(dataNew => 
-            { res.json(dataNew)
-        })
-        .catch(err => {
+        try {
+            const workOutNew = await Workout.create({})
+            res.json(workOutNew);
+        } catch (err) {
             console.log('Error!', err); 
-            res.json(err)
-        })
+            res.status(500).json(err);
+        }
     });
 //Update a workout based on workout id
-    router.put('/:id', (req, res) => {
-        Workout.findOneAndUpdate(
-            {_id: req.params.id},
-            { $push: {exercises: req.body} })
-            .then(dataUpdate => res.json(dataUpdate))
-            .catch(err => {
-                console.log('Error!', err)
-                res.json(err)
-            })
+    router.put('/:id', async (req, res) => {
+        try {
+            const workOutUpdate = await Workout.findByIdAndUpdate(
+                {id} = req.params,
+                {
+                    $push: {
+                        exercises: req.body,
+                    },
+                },
+                { new: true, runValidators: true }
+            );
+            res.json(workOutUpdate); 
+        } catch (err) {
+            res.status(500).json(err);
+            }
     });
+        // Workout.findOneAndUpdate(
+        //     {_id: req.params.id},
+        //     { $push: {exercises: req.body} })
+        //     .then(dataUpdate => res.json(dataUpdate))
+        //     .catch(err => {
+        //         console.log('Error!', err)
+        //         res.json(err)
+        //     })
+    // });
 
     module.exports = router;
