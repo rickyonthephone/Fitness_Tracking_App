@@ -1,9 +1,10 @@
-const db = require('../models');
+const { Workout } = require('../../models');
+const router = require('express').Router();
 
-module.exports = function (app) {
-//Get all workout data
-    app.get ('/api/workouts', (req, res) => {
-        db.Workout.find({})
+
+//Get workout data
+    router.get ('/', (req, res) => {
+        Workout.find({})
             .then(data => {
                 res.json(data)
             })
@@ -12,8 +13,8 @@ module.exports = function (app) {
             })
     });
 
-    app.get ('/api/workouts/range', (req, res) => {
-        db.Workout.find({})
+    router.get ('/range', (req, res) => {
+        Workout.find({})
             .sort({date: -1})
             .then(data => {
                 res.json(data)
@@ -23,8 +24,8 @@ module.exports = function (app) {
             })
     });
 //Create/post a workout    
-    app.post ('/api/workouts', async (req, res) => {
-        db.Workout.create({})
+    router.post ('/', async (req, res) => {
+        Workout.create({})
         .then(dataNew => 
             { res.json(dataNew)
         })
@@ -34,8 +35,8 @@ module.exports = function (app) {
         })
     });
 //Update a workout based on workout id
-    app.put('/api/workouts/:id', (req, res) => {
-        db.Workout.findOneAndUpdate(
+    router.put('/:id', (req, res) => {
+        Workout.findOneAndUpdate(
             {_id: req.params.id},
             { $push: {exercises: req.body} })
             .then(dataUpdate => res.json(dataUpdate))
@@ -44,5 +45,5 @@ module.exports = function (app) {
                 res.json(err)
             })
     });
-};
 
+    module.exports = router;

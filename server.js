@@ -3,6 +3,7 @@ const colors = require('colors');
 const connectDb = require('./db/connect');
 const morgan = require('morgan');
 const dotenv = require ('dotenv');
+const routes = require('./routes');
 
 
 
@@ -16,11 +17,7 @@ app.use(morgan('dev'));
 app.use (express.json())
 app.use(express.urlencoded({ extended: true}));
 app.use(express.static('public'));
-
-//Routing
-
-require('./routes/apiRoutes')(app);
-require('./routes/htmlRoutes')(app);
+app.use(routes);
 
 
 
