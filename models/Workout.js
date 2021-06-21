@@ -15,9 +15,6 @@ const workOutSchema = new Schema ({
         }
     ]
     }, 
-    {
-    timestamps: true
-    },
 );
 
 
