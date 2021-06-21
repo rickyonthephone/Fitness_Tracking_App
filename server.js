@@ -7,7 +7,7 @@ const routes = require('./routes');
 
 
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8000
 
 dotenv.config();
 connectDb();

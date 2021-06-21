@@ -24,9 +24,9 @@ const router = require('express').Router();
             })
     });
 //Create/post a workout    
-    router.post ('/', async (req, res) => {
+    router.post ('/', async ({ body }, res) => {
         try {
-            const workOutNew = await Workout.create({})
+            const workOutNew = await Workout.create(body)
             res.json(workOutNew);
         } catch (err) {
             console.log('Error!', err); 
@@ -37,11 +37,8 @@ const router = require('express').Router();
     router.put('/:id', async (req, res) => {
         try {
             const workOutUpdate = await Workout.findByIdAndUpdate(
-                {id} = req.params,
-                {
-                    $push: {
-                        exercises: req.body,
-                    },
+                req.params.id,
+                { $push: { exercises: req.body },
                 },
                 { new: true, runValidators: true }
             );
