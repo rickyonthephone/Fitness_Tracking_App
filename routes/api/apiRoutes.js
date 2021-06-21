@@ -13,6 +13,17 @@ const router = require('express').Router();
             })
     });
 
+    router.get('/', (req, res) => {
+        db.Workout.aggregate([{
+            $addFields: { totalDuration: { $sum: '$exercises.duration'}}
+        }])
+        .then(dbWorkout => {
+            res.json(dbWorkout)
+        })
+        .catch(err => {
+            res.json(err);
+        });
+    });
 
     router.get ('/range', (req, res) => {
         db.Workout.find({})
@@ -30,29 +41,20 @@ const router = require('express').Router();
           .then (dbNewWorkout => { res.json(dbNewWorkout)})
           .catch (err => { res.status(400).json(err)})
     });
-    
+
 //Update a workout based on workout id
     router.put('/:id', async (req, res) => {
-        try {
-            const workOutUpdate = await Workout.findByIdAndUpdate(
+        db.Workout.findByIdAndUpdate(
                 req.params.id,
                 { $push: { exercises: req.body }
-                }
-            );
-            res.json(workOutUpdate); 
-        } catch (err) {
+                })
+            .then(dbWorkout =>{
+                res.json(dbWorkout)
+            }) 
+            .catch (err => {
             res.status(500).json(err);
-            }
+            });
     });
-        // Workout.findOneAndUpdate(
-        //     {_id: req.params.id},
-        //     { $push: {exercises: req.body} })
-        //     .then(dataUpdate => res.json(dataUpdate))
-        //     .catch(err => {
-        //         console.log('Error!', err)
-        //         res.json(err)
-        //     })
-    // });
 
     module.exports = router;
 
