@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
-const MongoDB = require('mongodb');
+
 
 const connectDb = async () => {
     try {
-        let conn = await mongoose.connect (process.env.MONGODB_URI, {
+        let conn = await mongoose.connect (process.env.MONGODB_URI || "mongodb:localhost/workout", {
             useUnifiedTopology: true, 
             useNewUrlParser: true, 
             useCreateIndex: true,
-            useFindAndModify: false
+            useFindAndModify: true
         });
         console.log(`MongoDB connected: ${conn.connection.host}`.cyan.underline)
     } catch (err) {
