@@ -1,4 +1,4 @@
-# Unit 18 Nosql Homework: Workout Tracker
+# Workout Tracker
 
 Create a workout tracker. You have already been provided with the front end code. Store data by creating Mongo database with a Mongoose schema and handle routes with Express.
 
